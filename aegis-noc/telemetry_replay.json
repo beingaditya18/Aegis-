@@ -1,0 +1,122 @@
+[
+  {
+    "timestamp": "10:00",
+    "link": "MPLS Link-3",
+    "utilization": 45.0,
+    "jitter": 4.2,
+    "queue_depth": 22.0,
+    "bgp_flaps": 0,
+    "rtt": 18.5,
+    "status": "normal"
+  },
+  {
+    "timestamp": "10:03",
+    "link": "MPLS Link-3",
+    "utilization": 58.0,
+    "jitter": 5.1,
+    "queue_depth": 30.0,
+    "bgp_flaps": 0,
+    "rtt": 20.1,
+    "status": "normal"
+  },
+  {
+    "timestamp": "10:06",
+    "link": "MPLS Link-3",
+    "utilization": 72.0,
+    "jitter": 8.4,
+    "queue_depth": 42.0,
+    "bgp_flaps": 1,
+    "rtt": 26.8,
+    "status": "warning"
+  },
+  {
+    "timestamp": "10:09",
+    "link": "MPLS Link-3",
+    "utilization": 81.0,
+    "jitter": 14.0,
+    "queue_depth": 58.0,
+    "bgp_flaps": 1,
+    "rtt": 34.2,
+    "status": "warning"
+  },
+  {
+    "timestamp": "10:12",
+    "link": "MPLS Link-3",
+    "utilization": 88.0,
+    "jitter": 20.5,
+    "queue_depth": 65.0,
+    "bgp_flaps": 2,
+    "rtt": 46.7,
+    "status": "warning"
+  },
+  {
+    "timestamp": "10:15",
+    "link": "MPLS Link-3",
+    "utilization": 93.0,
+    "jitter": 32.0,
+    "queue_depth": 78.0,
+    "bgp_flaps": 3,
+    "rtt": 68.0,
+    "status": "critical"
+  },
+  {
+    "timestamp": "10:18",
+    "link": "MPLS Link-3",
+    "utilization": 96.0,
+    "jitter": 48.0,
+    "queue_depth": 87.0,
+    "bgp_flaps": 5,
+    "rtt": 92.3,
+    "status": "critical"
+  },
+  {
+    "timestamp": "10:21",
+    "link": "MPLS Link-3",
+    "utilization": 94.0,
+    "jitter": 38.0,
+    "queue_depth": 81.0,
+    "bgp_flaps": 4,
+    "rtt": 80.1,
+    "status": "critical"
+  },
+  {
+    "timestamp": "10:24",
+    "link": "MPLS Link-3",
+    "utilization": 76.0,
+    "jitter": 15.0,
+    "queue_depth": 52.0,
+    "bgp_flaps": 1,
+    "rtt": 42.0,
+    "status": "fix_applied"
+  },
+  {
+    "timestamp": "10:27",
+    "link": "MPLS Link-3",
+    "utilization": 55.0,
+    "jitter": 6.2,
+    "queue_depth": 28.0,
+    "bgp_flaps": 0,
+    "rtt": 22.0,
+    "status": "normal"
+  },
+  {
+    "timestamp": "10:30",
+    "link": "MPLS Link-3",
+    "utilization": 48.0,
+    "jitter": 4.0,
+    "queue_depth": 20.0,
+    "bgp_flaps": 0,
+    "rtt": 18.0,
+    "status": "normal"
+  },
+  {
+    "timestamp": "10:33",
+    "link": "MPLS Link-3",
+    "utilization": 41.0,
+    "jitter": 3.5,
+    "queue_depth": 18.0,
+    "bgp_flaps": 0,
+    "rtt": 16.2,
+    "status": "normal"
+  }
+]

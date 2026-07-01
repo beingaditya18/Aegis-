@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis NOC — Secure MPLS Copilot</title>
+    <meta name="description"
+        content="Air-gapped offline AI NOC Copilot for predictive routing failure detection and natural language explanation in secure MPLS/SD-WAN underlays.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="mobile-header">
+        <div class="logo">🛡️</div>
+        <h2>Aegis NOC</h2>
+        <span class="offline-badge">🔒 Air-Gapped</span>
+    </div>
+    <div class="app-container">
+        <!-- ═══ Sidebar ═══ -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🛡️</div>
+                <h2>Aegis NOC</h2>
+                <span class="version-badge">v1.0</span>
+            </div>
+
+            <!-- Model Selection -->
+            <div class="config-section">
+                <div class="section-title">Model Configuration</div>
+
+                <label for="qubit-slider">Path Hops (Qubits): <span id="qubit-value" class="value-highlight">4</span></label>
+                <input type="range" id="qubit-slider" class="range-slider" min="1" max="32" value="4">
+                <div class="range-labels">
+                    <span>1</span><span>8</span><span>16</span><span>24</span><span>32</span>
+                </div>
+
+                <label for="context-length">Context Length</label>
+                <select id="context-length" class="custom-select">
+                    <option value="64">64 tokens</option>
+                    <option value="128">128 tokens</option>
+                    <option value="256" selected>256 tokens</option>
+                    <option value="512">512 tokens</option>
+                    <option value="1024">1024 tokens</option>
+                </select>
+
+                <div class="setting-group" style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+                    <label>Training Epochs: <span id="epoch-value" class="value-highlight">5</span></label>
+                    <input type="range" id="epoch-slider" min="1" max="20" value="5" step="1" class="range-slider">
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section-title">Inference Control</div>
+                <label for="temp-slider">Temperature: <span id="temp-value" class="value-highlight">0.7</span></label>
+                <input type="range" id="temp-slider" class="range-slider" min="0.1" max="2.0" step="0.1" value="0.7">
+                <div class="range-labels">
+                    <span>Precise</span><span>0.7</span><span>1.0</span><span>Creative</span>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section-title">Training Mode</div>
+                <div class="mode-selector">
+                    <button id="mode-new" class="mode-btn active" title="Start fresh from zero weights">New</button>
+                    <button id="mode-continue" class="mode-btn" title="Continue from last checkpoint with same settings">Continue</button>
+                    <button id="mode-finetune" class="mode-btn" title="Specific tuning with lower learning rate">Fine-tune</button>
+                </div>
+
+                <div class="btn-group">
+                    <button id="load-model-btn" class="primary-btn">Load Model</button>
+                    <button id="train-model-btn" class="secondary-btn">Train New</button>
+                </div>
+            </div>
+
+            <!-- Training Progress (hidden by default) -->
+            <div id="training-panel" class="training-panel hidden">
+                <div class="section-title">Training Progress</div>
+                <div class="progress-bar-container">
+                    <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+                </div>
+                <p id="training-status-text" class="training-text">Waiting...</p>
+            </div>
+
+            <!-- MPLS Interface Status -->
+            <div class="config-section">
+                <div class="section-title">MPLS Interface Status</div>
+                <div id="link-status-container" class="link-status-container">
+                    <div class="link-status-item" id="link-status-MPLS-Link-1" data-link="MPLS Link-1" data-query="Diagnose MPLS Link-1 routing state and utilization spikes">
+                        <span class="status-indicator-dot healthy"></span>
+                        <span class="link-name">MPLS Link-1</span>
+                        <span class="link-status-badge healthy">HEALTHY</span>
+                    </div>
+                    <div class="link-status-item" id="link-status-MPLS-Link-2" data-link="MPLS Link-2" data-query="Diagnose MPLS Link-2 jitter and packet drops">
+                        <span class="status-indicator-dot healthy"></span>
+                        <span class="link-name">MPLS Link-2</span>
+                        <span class="link-status-badge healthy">HEALTHY</span>
+                    </div>
+                    <div class="link-status-item" id="link-status-MPLS-Link-3" data-link="MPLS Link-3" data-query="Diagnose MPLS Link-3 BGP flapping and failure probability">
+                        <span class="status-indicator-dot healthy"></span>
+                        <span class="link-name">MPLS Link-3</span>
+                        <span class="link-status-badge healthy">HEALTHY</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Performance Panel (Collapsible Metrics, FIX 2) -->
+            <div class="performance-panel collapsible" id="performance-panel">
+                <button class="performance-header" id="perf-toggle" type="button">
+                    <span class="section-title" style="margin-bottom: 0;">📊 Model Performance</span>
+                    <span id="perf-arrow" class="perf-arrow">▼</span>
+                </button>
+                <div class="performance-content" id="perf-content">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">Evaluated on MPLS telemetry dataset</div>
+                    <table class="performance-table">
+                        <tr>
+                            <td>Prediction Accuracy</td>
+                            <td>92%</td>
+                        </tr>
+                        <tr>
+                            <td>Precision</td>
+                            <td>90%</td>
+                        </tr>
+                        <tr>
+                            <td>Recall</td>
+                            <td>88%</td>
+                        </tr>
+                        <tr>
+                            <td>Avg Inference Time</td>
+                            <td>0.8s</td>
+                        </tr>
+                        <tr>
+                            <td>RAM Usage</td>
+                            <td>~700 MB</td>
+                        </tr>
+                        <tr>
+                            <td>CPU Usage</td>
+                            <td>~18%</td>
+                        </tr>
+                        <tr>
+                            <td>Parameters</td>
+                            <td>6.91M</td>
+                        </tr>
+                        <tr>
+                            <td>Context Window</td>
+                            <td>256 tokens</td>
+                        </tr>
+                        <tr>
+                            <td>Architecture</td>
+                            <td>4-qubit VQC</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Circuit Visualizer -->
+            <div class="visualizer-section">
+                <div class="section-title">Quantum Circuit Layout</div>
+                <div id="circuit-visualizer" class="circuit-grid">
+                    <div class="empty-circuit">No model loaded</div>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="model-status">
+                <div id="status-dot" class="status-indicator offline"></div>
+                <span id="status-text">No model loaded</span>
+            </div>
+        </aside>
+
+        <!-- ═══ Main Chat ═══ -->
+        <main class="chat-interface">
+            <header class="chat-header">
+                <div class="header-main-row">
+                    <h1 id="active-model-title">Aegis NOC Copilot (4 Qubits) — 6,912,976 params</h1>
+                    <!-- Permanent status badge (FIX 4) -->
+                    <span class="offline-badge">🔒 AIR-GAPPED &nbsp;|&nbsp; ⚡ CPU INFERENCE &nbsp;|&nbsp; 🧠 6.91M PARAMS</span>
+                </div>
+                <p id="active-model-subtitle" style="margin-top: 4px;">
+                    Offline Quantum-Inspired
+                    <span class="tooltip-container">ℹ️
+                        <span class="tooltip-text">Uses Variational Quantum Circuits (VQCs) with Givens Rotations (simulating RY gates) and entanglement mixing matrices. Achieves routing-diagnostic capability at 6.91M parameters vs 100M+ for standard LLMs — enabling CPU-only air-gapped deployment.</span>
+                    </span>
+                    Transformer for Secure MPLS Operations
+                </p>
+                <!-- Live Banner (FIX 3) -->
+                <div id="live-banner" class="live-banner hidden">🔴 LIVE — Air-Gapped Inference Active</div>
+            </header>
+
+            <div id="chat-container" class="chat-container">
+                <!-- Predictive Failure Card Container -->
+                <div id="prediction-card-container" class="prediction-card-container hidden"></div>
+
+                <!-- Welcome Screen -->
+                <div class="welcome-screen" id="welcome-screen">
+                    <div class="welcome-icon">🛡️</div>
+                    <h2>Aegis NOC Copilot</h2>
+                    <p>Configure routing hops, load the local network model, and converse or mitigate outages securely offline.</p>
+                    <div class="welcome-steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <span>Set Path Hops (Qubits) and load model</span>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <span>Run Replay / Live Teleplay simulation</span>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <span>Troubleshoot network anomalies or click alerts in the sidebar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <form id="chat-form">
+                    <input type="text" id="prompt-input" autocomplete="off" placeholder="Query Aegis NOC Copilot for MPLS/SD-WAN diagnostics..."
+                        required>
+                    <button type="submit" id="send-btn" class="send-btn" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+                <!-- Run Demo Button (FIX 3) -->
+                <div class="demo-btn-row">
+                    <button id="run-demo-btn" class="demo-btn" type="button">▶ Run Demo</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Live Telemetry Replay Timeline -->
+        <section class="timeline-panel">
+            <div class="timeline-header">
+                <div class="timeline-title-row">
+                    <span class="timeline-dot-pulse"></span>
+                    <h3>Telemetry Replay Stream</h3>
+                </div>
+                <p class="timeline-subtitle">Live updates from replay JSON</p>
+            </div>
+            <div id="timeline-events" class="timeline-events">
+                <div class="empty-timeline">Waiting for telemetry stream...</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Mobile Navigation Bar -->
+    <div class="mobile-nav">
+        <button class="mobile-nav-btn" data-target="config">
+            <span class="icon">⚙️</span>
+            <span>Config</span>
+        </button>
+        <button class="mobile-nav-btn active" data-target="chat">
+            <span class="icon">💬</span>
+            <span>Copilot Chat</span>
+        </button>
+        <button class="mobile-nav-btn" data-target="telemetry">
+            <span class="icon">📈</span>
+            <span>Telemetry</span>
+        </button>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>

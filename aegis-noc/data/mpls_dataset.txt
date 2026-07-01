@@ -1,0 +1,195 @@
+### USER:
+What is the predictive alert for BGP flapping on router PE-03?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Link PE-03-to-P-02 shows high interface CRC errors (rising from 0 to 125/sec).
+[PROBABILITY] 94% probability of BGP session flap within 10 minutes.
+[REASONING] Signal degradation on the physical layer is causing frame drops on Keepalive packets, which will breach the HoldTime limit (90 seconds).
+[REMEDIATION] Run command: `show interfaces ge-0/0/2 extensive` and check physical transceiver power levels with `show interfaces diagnostics optics ge-0/0/2`. Switch MPLS traffic to alternate tunnel path via PE-03-to-P-01 using: `set protocols mpls label-switched-path LSP-PE03-P01 active`.
+========================================
+### USER:
+Explain the predictive warning for Jitter Spikes on Tunnel MPLS-02.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Jitter on Tunnel MPLS-02 spiked from 2.1ms to 24.8ms over the last 3 minutes.
+[PROBABILITY] 85% probability of voice/video class-of-service SLA violation.
+[REASONING] Underlay SD-WAN paths are experiencing packet queueing due to sudden traffic congestion on upstream provider transit interface.
+[REMEDIATION] Force voice traffic to secondary underlay circuit via command: `set class-of-service interface ge-0/0/1 scheduler-map QoS-Map` or trigger policy routing override: `set protocols flow-spec route-target import`.
+========================================
+### USER:
+How should I handle the Packet Loss prediction on Tunnel MPLS-01?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Early drop metrics indicate progressive packet loss (current 0.5%, climbing to 3%) on Tunnel MPLS-01.
+[PROBABILITY] 90% probability of SD-WAN tunnel degradation and backup path switchover.
+[REASONING] A faulty interface buffer on core router P-01 is leading to Tail Drops during micro-bursts of replication traffic.
+[REMEDIATION] Clear interface statistics with `clear interfaces statistics ge-0/0/0`. Verify buffer drops by running: `show interfaces queue ge-0/0/0`. Divert MPLS LSP to detour path: `set protocols mpls label-switched-path LSP-MPLS-01 optimize`.
+========================================
+### USER:
+What does the LDP Session Disconnect warning signify?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: LDP session to neighbor 10.0.0.2 is experiencing intermittent TCP reset packets.
+[PROBABILITY] 80% probability of Label Switched Path (LSP) breakdown in the core.
+[REASONING] The OSPF cost path changed, routing LDP TCP control messages (Port 646) through a saturated link where fragmentation is occurring.
+[REMEDIATION] Force LDP session keepalive parameters: `set protocols ldp session 10.0.0.2 keepalive-time 45`. Check OSPF paths using `show ospf route`.
+========================================
+### USER:
+Analyze the SD-WAN Underlay Latency Degradation alert.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Latency on broadband underlay WAN-2 has increased from 42ms to 185ms.
+[PROBABILITY] 75% probability of application failover to expensive MPLS link.
+[REASONING] Provider routing tables indicate suboptimal BGP peering change at the regional exchange point.
+[REMEDIATION] Apply SD-WAN policy to route critical business apps only over the MPLS underlay: `set services sdwan policy APP-ROUTE rule BUSINESS-CRITICAL next-hop 10.10.10.1`.
+========================================
+### USER:
+What causes OSPF Neighbor Adjacency Lost warning on router P-01?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: OSPF DeadTimer count down initiated on interface ge-0/0/3 to neighbor 10.0.0.5.
+[PROBABILITY] 98% probability of route convergence storm in the core.
+[REASONING] Bidirectional Forwarding Detection (BFD) triggered a failure alert due to sub-millisecond physical link flap.
+[REMEDIATION] Run command: `show ospf neighbor` and `show bfd session`. Adjust OSPF Hello parameters if necessary: `set protocols ospf area 0.0.0.0 interface ge-0/0/3 hello-interval 10`.
+========================================
+### USER:
+Explain the RSVP Path Error warning on LSP-05.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: RSVP PATH message received "Routing loop detected" on LSP-05.
+[PROBABILITY] 100% probability of traffic blackholing on that Label-Switched Path.
+[REASONING] A race condition in Constrained Shortest Path First (CSPF) calculations after a network flap created a temporary routing loop.
+[REMEDIATION] Run command: `show mpls lsp name LSP-05 detail`. Force CSPF recalculation: `clear protocols mpls lsp name LSP-05`.
+========================================
+### USER:
+How do I remediate the MTU Mismatch warning on Ge-0/0/1?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: OSPF neighbor 10.100.1.1 is stuck in "ExStart" state on Ge-0/0/1.
+[PROBABILITY] 100% probability of routing adjacency failure.
+[REASONING] Maximum Transmission Unit (MTU) mismatches prevent database description (DBD) exchange packets from being accepted.
+[REMEDIATION] Match the interface MTU on both ends of the link. Check current MTU: `show interfaces ge-0/0/1`. Set correct MTU: `set interfaces ge-0/0/1 mtu 1500` or configure OSPF to ignore it: `set protocols ospf area 0.0.0.0 interface ge-0/0/1 mtu-ignore`.
+========================================
+### USER:
+What is the warning for L3VPN Route Distribution Failure?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: MP-BGP route reflector PE-01 is rejecting prefixes from Client VRF-A.
+[PROBABILITY] 90% probability of VRF traffic isolation.
+[REASONING] Route Target (RT) or Route Distinguisher (RD) mismatch between client sites prevents VRF import/export.
+[REMEDIATION] Verify RT configurations with `show configuration routing-instances VRF-A`. Correct VRF import policies using: `set routing-instances VRF-A vrf-target target:65001:100`.
+========================================
+### USER:
+Explain the Subsecond BFD Flapping on Core Link P1-P2.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: BFD packets between P-01 and P-02 are experiencing irregular transmission intervals (>15ms jitter).
+[PROBABILITY] 70% probability of false-positive link down trigger.
+[REASONING] CPU saturation on the Route Processor is delaying BFD packet generation/processing.
+[REMEDIATION] Move BFD processing to the distributed line card: `set protocols ospf area 0 interface ge-0/0/1 bfd-liveness-detection version 1`. View memory usage: `show system memory`.
+========================================
+### USER:
+Analyze the RSVP-TE Metric Congestion Alert.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Tunnel bandwidth requests on link P-02 to P-03 exceed 85% of reservable limit.
+[PROBABILITY] 80% probability of new LSP requests being blocked.
+[REASONING] Insufficient traffic engineering resource allocation during peak business hours.
+[REMEDIATION] Adjust MPLS bandwidth reservations: `set protocols mpls interface ge-0/0/4 bandwidth 1g`. Re-route lower priority LSPs to alternative paths.
+========================================
+### USER:
+What is the predictive alert for MPLS LSR Label Exhaustion?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Core Label Switch Router (LSR) P-02 has utilized 91% of its dynamically allocated label space.
+[PROBABILITY] 95% probability of incoming LSP setup failures.
+[REASONING] A high volume of transient L3VPN routing prefixes is exhausting the label information base (LIB).
+[REMEDIATION] Configure label aggregation: `set protocols mpls label-allocation aggregate`. Check utilization with `show mpls label usage`.
+========================================
+### USER:
+How do I solve MAC Address Flapping on VPLS Instance warning?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: MAC address 00:50:56:AB:CD:EF is rapidly switching between interfaces ge-0/0/1 and ge-0/0/2 in VPLS-10.
+[PROBABILITY] 90% probability of Layer 2 network loop and broadcast storm.
+[REASONING] A redundant connection between sites lacks Spanning Tree Protocol (STP) configuration or MAC loop protection.
+[REMEDIATION] Enable MAC limit and block action: `set routing-instances VPLS-10 bridge-domains VPLS-10 bridge-domain-spec mac-limit 1000 action drop`.
+========================================
+### USER:
+Explain the SD-WAN Controller Unreachability Forecast.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Control channel packets to SD-WAN vSmart controller are experiencing 12% packet loss.
+[PROBABILITY] 85% probability of control-plane disconnect and configuration freeze.
+[REASONING] Intermittent internet underlay path failure to the cloud controller.
+[REMEDIATION] Force control connections to fallback to private MPLS underlay: `set system edge-control backup-transport mpls`.
+========================================
+### USER:
+What is the warning for IPSec Tunnel Rekey Failure?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: IKE Phase 2 SA negotiation timed out 3 times with peer 203.0.113.5.
+[PROBABILITY] 95% probability of secure tunnel collapse upon current SA expiration (in 15 mins).
+[REASONING] IPSec proposal mismatches (Diffie-Hellman group or encryption algorithm differences).
+[REMEDIATION] Match security association parameters using command: `show security ike security-associations` and `show security ipsec security-associations`.
+========================================
+### USER:
+Explain the QoS Queue Drops on PE-02 Class-of-Service.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: EF (Expedited Forwarding) voice queue on PE-02 ge-0/0/0 is experiencing tail drops.
+[PROBABILITY] 90% probability of degraded VoIP call quality.
+[REASONING] Real-time voice traffic is exceeding the configured QoS bandwidth profile limit.
+[REMEDIATION] Increase QoS allocation for voice class: `set class-of-service schedulers Voice-Sched transmit-rate percent 30`.
+========================================
+### USER:
+Explain the Unicast Flooding Spike on SD-WAN Edge.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Unknown unicast packet rate increased from 10/sec to 1500/sec.
+[PROBABILITY] 75% probability of switch forwarding table overflow.
+[REASONING] MAC table aging out active entries too fast or MAC flooding attack.
+[REMEDIATION] Increase MAC aging timer: `set ethernet-switching-options mac-table-aging-time 1200`. Check current MAC count: `show ethernet-switching table count`.
+========================================
+### USER:
+What is the Optical Transceiver Transmit Power Low Warning?
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Interface ge-0/0/2 optical Tx power dropped to -14.2 dBm (threshold: -12.0 dBm).
+[PROBABILITY] 80% probability of physical interface link down.
+[REASONING] Laser degradation or dirty fiber patch connector.
+[REMEDIATION] Clean fiber connectors and run command: `show interfaces diagnostics optics ge-0/0/2` to check real-time transceiver health readings.
+========================================
+### USER:
+Explain the High Memory Consumption Alert on Route Processor.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: Route Processor CPU/Memory utilization reached 92% virtual capacity.
+[PROBABILITY] 90% probability of control-plane degradation or router reload.
+[REASONING] Leak in routing engine process or excessively large BGP routing table imports.
+[REMEDIATION] Run command: `show system processes brief`. Apply route filtering prefix limits: `set protocols bgp group ISP-PEER family inet unicast prefix-limit maximum 100000 teardown 90`.
+========================================
+### USER:
+Explain the Fast Reroute (FRR) Activation Warning.
+
+### ASSISTANT:
+[PREDICTIVE ALERT] Warning: MPLS Fast Reroute bypass tunnel active for LSP-Core-01.
+[PROBABILITY] 100% probability of secondary path usage.
+[REASONING] Primary physical path link down detected by microsecond BFD.
+[REMEDIATION] Check active backup path with `show mpls lsp name LSP-Core-01 detail`. Troubleshoot primary link via `show interfaces ge-0/0/1`.
+========================================
+### USER:
+Who are you?
+
+### ASSISTANT:
+I am the Aegis Predictive NOC Copilot, a local quantum-inspired artificial intelligence assistant developed to monitor network telemetry and diagnose failures on MPLS and SD-WAN underlays. Use your predictive intelligence and detailed routing knowledge to assist operators with diagnostics and CLI remediation steps.
+========================================
+### USER:
+How to check route resiliency?
+
+### ASSISTANT:
+To check route resiliency on MPLS underlays, run commands such as:
+1. `show mpls lsp detail` - displays path constraints and standby detours.
+2. `show ospf database` - checks topological routes and link states.
+3. `show route table inet.3` - displays routing tables dedicated to MPLS label-switched paths to ensure tunnel integrity.
+========================================
