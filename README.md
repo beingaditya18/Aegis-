@@ -70,17 +70,17 @@ Aegis NOC is built on a unified, high-performance three-tier architecture:
 
 Click the links below to inspect the codebase components directly:
 
-* [main.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/main.py) — FastAPI server, API endpoint controllers, event streaming, and telemetry scoring logic.
-* [train.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/train.py) — Cosine-scheduled training pipeline supporting new runs, checkpoint continuation, or fine-tuning.
-* [aegis_transformer/](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/aegis_transformer/) — Core neural network module.
-    * [config.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/aegis_transformer/config.py) — Configuration dataclass defining qubits, dimensions, context sizes, and defaults.
-    * [model.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/aegis_transformer/model.py) — Autoregressive Transformer with KV-caching.
-    * [layers.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/aegis_transformer/layers.py) — Unitary rotation layers, Givens rotations, and entanglement mixers.
-    * [tokenizer.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/aegis_transformer/tokenizer.py) — BPE Tokenizer trained on network vocabulary files.
-* [templates/index.html](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/templates/index.html) — 3-panel dashboard layout (Sidebar, Chat window, Live Telemetry feed).
-* [static/](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/static/) — Static stylesheets and scripting.
-    * [style.css](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/static/style.css) — Custom premium dark-mode styling with custom scrollbars, layout rules, and responsive design.
-    * [script.js](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis-noc/static/script.js) — Backend integration logic, chart building, SSE stream listener, and interactive event triggers.
+* [main.py](file:///c:/Users/adity/Downloads/quantum-ai-main/main.py) — FastAPI server, API endpoint controllers, event streaming, and telemetry scoring logic.
+* [train.py](file:///c:/Users/adity/Downloads/quantum-ai-main/train.py) — Cosine-scheduled training pipeline supporting new runs, checkpoint continuation, or fine-tuning.
+* [aegis_transformer/](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis_transformer/) — Core neural network module.
+    * [config.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis_transformer/config.py) — Configuration dataclass defining qubits, dimensions, context sizes, and defaults.
+    * [model.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis_transformer/model.py) — Autoregressive Transformer with KV-caching.
+    * [layers.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis_transformer/layers.py) — Unitary rotation layers, Givens rotations, and entanglement mixers.
+    * [tokenizer.py](file:///c:/Users/adity/Downloads/quantum-ai-main/aegis_transformer/tokenizer.py) — BPE Tokenizer trained on network vocabulary files.
+* [templates/index.html](file:///c:/Users/adity/Downloads/quantum-ai-main/templates/index.html) — 3-panel dashboard layout (Sidebar, Chat window, Live Telemetry feed).
+* [static/](file:///c:/Users/adity/Downloads/quantum-ai-main/static/) — Static stylesheets and scripting.
+    * [style.css](file:///c:/Users/adity/Downloads/quantum-ai-main/static/style.css) — Custom premium dark-mode styling with custom scrollbars, layout rules, and responsive design.
+    * [script.js](file:///c:/Users/adity/Downloads/quantum-ai-main/static/script.js) — Backend integration logic, chart building, SSE stream listener, and interactive event triggers.
 
 ---
 
